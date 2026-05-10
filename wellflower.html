@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The WellFlower — Ronald Conn III</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f2ea;
+      --bg-card: #ffffff;
+      --bg-alt: #ece8de;
+      --gold: #b8922c;
+      --gold-light: #c9a84c;
+      --gold-dim: rgba(184, 146, 44, 0.1);
+      --charcoal: #2a2820;
+      --charcoal-dim: rgba(42, 40, 32, 0.06);
+      --gray: #c0bdb6;
+      --gray-dim: rgba(192, 189, 182, 0.18);
+      --text: #1c1a14;
+      --text-muted: #7a7468;
+      --border: rgba(0,0,0,0.08);
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --dark-bg: #0f0e0a;
+      --dark-text: #f1f0eb;
+      --dark-muted: rgba(241,240,235,0.55);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 4rem;
+      background: rgba(245, 242, 234, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--gold); font-weight: 600; }
+    .nav-back svg { width: 16px; height: 16px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.5rem;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      border: none;
+    }
+    .btn-gold { background: var(--gold); color: #09090f; }
+    .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.35); }
+    .btn-outline { background: transparent; color: var(--gold); border: 1.5px solid var(--gold); }
+    .btn-outline:hover { background: var(--gold-dim); transform: translateY(-1px); }
+
+    /* ─── CASE STUDY HERO ─── */
+    .cs-hero {
+      padding: 10rem 4rem 6rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .cs-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .cs-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .cs-client {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .cs-client em { color: var(--gold); font-style: italic; }
+
+    .cs-subtitle {
+      font-family: var(--font-heading);
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    .cs-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 3rem;
+    }
+
+    .cs-tag {
+      display: inline-block;
+      padding: 0.35rem 0.85rem;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.18);
+      color: var(--gold);
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .cs-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 3rem;
+    }
+
+    /* ─── HERO IMAGE ─── */
+    .cs-hero-image {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 0;
+      padding: 0 4rem 6rem;
+    }
+
+    /* ─── CONTENT SECTIONS ─── */
+    .cs-section {
+      padding: 5rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cs-section--alt {
+      background: var(--bg-alt);
+      max-width: 100%;
+      padding: 5rem 4rem;
+    }
+
+    .cs-section--alt .cs-section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cs-section--dark {
+      background: var(--dark-bg);
+      max-width: 100%;
+      padding: 6rem 4rem;
+    }
+
+    .cs-section--dark .cs-section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.9rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 1.5rem;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .cs-section-headline {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 900;
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    .cs-section--dark .cs-section-headline { color: var(--dark-text); }
+
+    .cs-body {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+      max-width: 680px;
+      margin-bottom: 1.25rem;
+    }
+
+    .cs-body strong { color: var(--text); }
+    .cs-section--dark .cs-body { color: var(--dark-muted); }
+    .cs-section--dark .cs-body strong { color: var(--dark-text); }
+
+    /* ─── TWO-COL LAYOUT ─── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .two-col--reverse { direction: rtl; }
+    .two-col--reverse > * { direction: ltr; }
+
+    /* ─── IMAGE GRID ─── */
+    .img-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .img-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    /* ─── REAL IMAGES & VIDEO ─── */
+    .case-img {
+      width: 100%;
+      display: block;
+      border-radius: 14px;
+      object-fit: cover;
+    }
+    .case-img--tall { height: 480px; }
+    .case-img--wide { height: 320px; }
+    .case-img--short { height: 240px; }
+    .case-img--auto { height: auto; max-height: 600px; object-fit: contain; }
+    .case-video { width: 100%; display: block; border-radius: 14px; background: #000; }
+
+    /* ─── CALLOUT BLOCK ─── */
+    .callout {
+      background: var(--bg-card);
+      border: 1px solid rgba(184,146,44,0.2);
+      border-left: 4px solid var(--gold);
+      border-radius: 10px;
+      padding: 2rem 2.25rem;
+      margin: 2rem 0;
+    }
+
+    .callout-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .callout p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .callout p strong { color: var(--text); }
+
+    /* ─── OUTCOME STATS ─── */
+    .outcomes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .outcome-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      text-align: center;
+    }
+
+    .outcome-number {
+      font-family: var(--font-heading);
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1.0;
+      margin-bottom: 0.4rem;
+    }
+
+    .outcome-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ─── CODE SNIPPET ─── */
+    .code-block {
+      background: var(--dark-bg);
+      border-radius: 10px;
+      padding: 2rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      color: rgba(241,240,235,0.8);
+      line-height: 1.75;
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.06);
+      margin: 1.5rem 0;
+    }
+
+    .code-block .comment { color: rgba(184,146,44,0.7); }
+    .code-block .keyword { color: #c9a84c; }
+    .code-block .string { color: rgba(184,200,144,0.9); }
+    .code-block .func { color: rgba(180,160,240,0.9); }
+
+    /* ─── NEXT PROJECT ─── */
+    .next-project {
+      padding: 5rem 4rem;
+      background: var(--bg-alt);
+      text-align: center;
+    }
+
+    .next-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .next-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 1.75rem;
+    }
+
+    .next-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #060609;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .footer-copy { font-size: 0.8rem; color: rgba(241,240,235,0.45); }
+
+    /* ─── ANIMATIONS ─── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.22s; }
+    .d3 { transition-delay: 0.35s; }
+    .d4 { transition-delay: 0.5s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 960px) {
+      nav { padding: 1rem 2rem; }
+      .cs-hero, .cs-section, .cs-hero-image { padding-left: 2rem; padding-right: 2rem; }
+      .cs-section--alt, .cs-section--dark { padding: 4rem 2rem; }
+      .two-col, .two-col--reverse { grid-template-columns: 1fr; gap: 2.5rem; direction: ltr; }
+      .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
+      .outcomes { grid-template-columns: 1fr 1fr; }
+      .next-project { padding: 4rem 2rem; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; padding: 1.5rem 2rem; }
+    }
+
+    @media (max-width: 600px) {
+      .outcomes { grid-template-columns: 1fr; }
+      .case-img--tall { height: 280px; }
+      .case-img--wide { height: 220px; }
+    }
+
+    /* ─── DROPDOWN ─── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-toggle {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      cursor: pointer;
+    }
+    .nav-dropdown-toggle::after {
+      content: '▾'; font-size: 0.7em; display: inline-block;
+      transition: transform 0.2s;
+    }
+    .nav-dropdown:hover .nav-dropdown-toggle::after { transform: rotate(-180deg); }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.75rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card, #fff);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.4rem 0;
+      list-style: none;
+      min-width: 155px;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.12);
+      z-index: 200;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    /* invisible bridge fills the gap so hover stays active */
+    .nav-dropdown::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: -1rem;
+      right: -1rem;
+      height: 0.9rem;
+    }
+    .nav-dropdown-menu li a {
+      display: block;
+      padding: 0.55rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .nav-dropdown-menu li a:hover { color: var(--gold); background: var(--gold-dim, rgba(184,146,44,0.06)); }
+    .nav-dropdown-menu li a.active { color: var(--gold); font-weight: 600; }
+    .nav-dropdown.active > .nav-dropdown-toggle { color: var(--gold); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">RC III</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li class="nav-dropdown active">
+      <a href="#" class="nav-dropdown-toggle">Case Studies</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="redbull.html">Red Bull</a></li>
+        <li><a href="wellflower.html" class="active">WellFlower</a></li>
+        <li><a href="origins.html">Origins</a></li>
+      </ul>
+    </li>
+  </ul>
+  <a href="index.html#contact" class="btn btn-gold">Let's Talk</a>
+</nav>
+
+<!-- ─── CASE STUDY HERO ─── -->
+<div class="cs-hero">
+  <div class="cs-eyebrow reveal">Case Study · Cannabis Retail</div>
+  <h1 class="cs-client reveal d1">The <em>WellFlower</em></h1>
+  <p class="cs-subtitle reveal d2">From store renders to compliance automation: embedded operations across three boutique cannabis locations in Michigan.</p>
+  <div class="cs-meta reveal d3">
+    <span class="cs-tag">3D Rendering</span>
+    <span class="cs-tag">Interior Design</span>
+    <span class="cs-tag">Mural Design</span>
+    <span class="cs-tag">Staff Training</span>
+    <span class="cs-tag">Packaging Design</span>
+    <span class="cs-tag">Python Automation</span>
+    <span class="cs-tag">Process Optimization</span>
+    <span class="cs-tag">Operations</span>
+  </div>
+  <div class="cs-divider"></div>
+</div>
+
+<!-- ─── HERO IMAGE ─── -->
+<div class="cs-hero-image">
+  <img src="images%20needed/wf-hero.jpg.jpg" alt="WellFlower store interior hero" class="case-img case-img--tall reveal">
+</div>
+
+<!-- ─── SECTION 1: CONTEXT ─── -->
+<div class="cs-section--alt">
+  <div class="cs-section-inner">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="section-label">The Brief</div>
+        <h2 class="cs-section-headline">A boutique cannabis brand built around experience.</h2>
+        <p class="cs-body">The WellFlower sold medical-grade cannabis through their own boutique retail locations in Michigan. They weren't just a dispensary. They were building a brand with a distinct aesthetic and a customer experience that matched it. They needed someone who could help bring that vision off the mood board and into the real world.</p>
+        <p class="cs-body">I came in as a multi-role operator. What started as design work grew into store operations, staff management, and eventually solving one of their most persistent back-office headaches.</p>
+      </div>
+      <div class="reveal d2">
+        <img src="images%20needed/wellflower-logo.jpg.jpg" alt="WellFlower brand identity and logo" class="case-img case-img--auto" style="border-radius:14px;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION 2: STORE DESIGN ─── -->
+<div class="cs-section">
+  <div class="section-label reveal">Phase 01</div>
+  <h2 class="cs-section-headline reveal d1">Designing the Spaces, Then Building Them.</h2>
+  <p class="cs-body reveal d2">The first thing I did for WellFlower was create <strong>3D renders of their store interiors</strong>. Working from their brand direction, I modeled out the full retail environments (display cases, lighting, materials, flow) and presented them as the visual blueprint for what the spaces would become.</p>
+  <p class="cs-body reveal d3">That work didn't end at the screen. I <strong>partnered with their interior designer and the build team</strong> to actually construct the spaces, bridging the gap between concept and construction and making sure what got built matched what we envisioned.</p>
+
+  <div class="img-grid-2" style="margin-top: 2.5rem;">
+    <img src="images%20needed/wf-render-floorplan.jpg.jpg" alt="WellFlower 3D render, store floor plan view" class="case-img case-img--tall reveal d1">
+    <img src="images%20needed/wf-render-display.jpg.jpg" alt="WellFlower 3D render, display cases and lighting" class="case-img case-img--tall reveal d2">
+  </div>
+
+  <div class="img-grid-3" style="margin-top: 1.25rem;">
+    <img src="images%20needed/wf-store-1.jpg.jpg" alt="WellFlower finished store, location 1" class="case-img case-img--short reveal">
+    <img src="images%20needed/wf-store-2.jpg.jpg" alt="WellFlower finished store, location 2" class="case-img case-img--short reveal d1">
+    <img src="images%20needed/wf-store-3.jpg.jpg" alt="WellFlower finished store, location 3" class="case-img case-img--short reveal d2">
+  </div>
+
+  <!-- ─── MURALS ─── -->
+  <div style="margin-top: 3.5rem;">
+    <div class="section-label reveal">Also Part of Phase 01</div>
+    <h3 class="reveal d1" style="font-family: var(--font-heading); font-size: clamp(1.3rem, 2.2vw, 1.75rem); font-weight: 900; color: var(--text); margin-bottom: 0.75rem; margin-top: 0.4rem;">Custom illustrated murals, designed and installed.</h3>
+    <p class="cs-body reveal d2">The store environments weren't just built to spec. They were branded floor to ceiling. I designed custom illustrated murals for the WellFlower locations and oversaw them from original artwork through finished wall installation.</p>
+    <div class="img-grid-3" style="margin-top: 1.5rem;">
+      <img src="images%20needed/wellflower-custom-illustrated-murals_01.jpg" alt="WellFlower mural design artwork" class="case-img case-img--wide reveal d1">
+      <img src="images%20needed/wellflower-custom-illustrated-murals%20installed%20%281%29.jpg" alt="WellFlower mural installed in store" class="case-img case-img--wide reveal d2">
+      <img src="images%20needed/wellflower-custom-illustrated-murals%20installed%20%282%29.jpg" alt="WellFlower mural installation detail" class="case-img case-img--wide reveal d3">
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION 3: OPERATIONS ─── -->
+<div class="cs-section--alt">
+  <div class="cs-section-inner">
+    <div class="two-col two-col--reverse">
+      <div class="reveal">
+        <div class="section-label">Phase 02</div>
+        <h2 class="cs-section-headline">Running the Stores.</h2>
+        <p class="cs-body">Once the locations were open, I helped operate them. That meant <strong>training staff</strong>, managing day-to-day operations, and making sure the customer experience held up to the brand standard we'd built.</p>
+        <p class="cs-body">I also <strong>designed their product packaging</strong>, bringing the same visual identity from the storefront onto the physical product, creating a cohesive experience from the moment a customer walked in to the moment they got home.</p>
+      </div>
+      <div class="img-grid-2 reveal d2">
+        <img src="images%20needed/wf-packaging%20%281%29.jpg" alt="WellFlower product packaging design" class="case-img case-img--tall">
+        <img src="images%20needed/wellflower-labels.jpg" alt="WellFlower label and brand asset designs" class="case-img case-img--tall">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION 4: THE METRC PROBLEM ─── -->
+<div class="cs-section--dark">
+  <div class="cs-section-inner">
+    <div class="section-label" style="color: var(--gold);">Phase 03: The Problem Nobody Asked Me to Solve</div>
+    <h2 class="cs-section-headline" style="color: var(--dark-text); max-width: 700px;">Michigan cannabis law required reporting every sale to a state database. They were doing it by hand.</h2>
+
+    <div class="two-col" style="margin-top: 3rem;">
+      <div>
+        <p class="cs-body">In Michigan, every cannabis retailer is legally required to submit their sales data and customer information to a state system called <strong style="color: var(--dark-text);">Metrc</strong>, a compliance database that verifies all sales are made to verified legal adults.</p>
+        <p class="cs-body">Before I got involved, WellFlower's process was this: <strong style="color: var(--dark-text);">every two weeks, staff manually counted inventory across all three stores, built a spreadsheet by hand, and submitted it to Metrc.</strong> It was slow, error-prone, and consumed hours of time across the organization on a recurring basis.</p>
+        <p class="cs-body">The proprietary point-of-sale software they used couldn't directly interface with Metrc, and the conventional wisdom was that there was no way around it. Nobody asked me to look into it. I just didn't think that was actually the case.</p>
+      </div>
+      <div>
+        <div class="callout" style="background: rgba(255,255,255,0.04); border-color: rgba(184,146,44,0.35); border-left-color: var(--gold);">
+          <div class="callout-label">The Constraint</div>
+          <p style="color: var(--dark-muted);">The POS software <strong style="color: var(--dark-text);">could not</strong> natively export data in a Metrc-compatible format. Three stores. Bi-weekly manual counts. No integration available.</p>
+        </div>
+        <div class="callout" style="background: rgba(255,255,255,0.04); border-color: rgba(184,146,44,0.35); border-left-color: var(--gold); margin-top: 1.25rem;">
+          <div class="callout-label">The Cost</div>
+          <p style="color: var(--dark-muted);">Staff hours every two weeks across three locations. Time spent on compliance reporting that could be spent on customers, and a recurring risk of human error on legally required data.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 3.5rem;">
+      <div class="section-label" style="color: var(--gold);">The Solution</div>
+      <h3 style="font-family: var(--font-heading); font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 900; color: var(--dark-text); margin-bottom: 1.25rem; max-width: 640px;">I wrote Python scripts to do it automatically.</h3>
+      <p class="cs-body" style="max-width: 680px;">I dug into the POS software's export capabilities and the Metrc API specification. <strong style="color: var(--dark-text);">I wrote Python scripts that took the raw sales data and automatically converted it into the exact spreadsheet format Metrc required.</strong> I also adjusted settings within the POS system to generate cleaner, more structured data at the source, making the transformation faster and more reliable.</p>
+
+      <div class="code-block">
+<span class="comment"># Simplified example of the core transformation logic</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+
+<span class="comment"># Load POS export (raw sales data)</span>
+sales_data = pd.<span class="func">read_csv</span>(<span class="string">'pos_export.csv'</span>)
+
+<span class="comment"># Reformat columns to match Metrc's required schema</span>
+metrc_df = pd.<span class="func">DataFrame</span>({
+  <span class="string">'PackageLabel'</span>: sales_data[<span class="string">'sku'</span>],
+  <span class="string">'Quantity'</span>: sales_data[<span class="string">'units_sold'</span>],
+  <span class="string">'UnitOfMeasureName'</span>: <span class="string">'Each'</span>,
+  <span class="string">'PatientLicenseNumber'</span>: sales_data[<span class="string">'customer_id'</span>],
+  <span class="string">'SaleDate'</span>: pd.<span class="func">to_datetime</span>(sales_data[<span class="string">'timestamp'</span>]).<span class="func">dt.strftime</span>(<span class="string">'%Y-%m-%d'</span>)
+})
+
+<span class="comment"># Export compliance-ready file</span>
+metrc_df.<span class="func">to_csv</span>(<span class="string">'metrc_submission.csv'</span>, index=<span class="keyword">False</span>)
+<span class="comment"># Repeat for all three store locations</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── OUTCOMES ─── -->
+<div class="cs-section--alt">
+  <div class="cs-section-inner">
+    <div class="section-label reveal">The Result</div>
+    <h2 class="cs-section-headline reveal d1">A manual bi-weekly process became<br><em style="font-style:italic; color: var(--gold);">a script that ran in seconds.</em></h2>
+    <p class="cs-body reveal d2">What had been a recurring drain on staff hours across three locations was eliminated entirely. The system handled the Metrc submission automatically, the data was cleaner than it had ever been, and the team could redirect their attention to what they were actually there to do.</p>
+
+    <div class="outcomes">
+      <div class="outcome-card reveal d1">
+        <div class="outcome-number">3×</div>
+        <div class="outcome-label">Stores automated with a single script run</div>
+      </div>
+      <div class="outcome-card reveal d2">
+        <div class="outcome-number">0</div>
+        <div class="outcome-label">Manual inventory counts required per submission</div>
+      </div>
+      <div class="outcome-card reveal d3">
+        <div class="outcome-number">↑</div>
+        <div class="outcome-label">Data accuracy: removed human transcription errors from a legally required report</div>
+      </div>
+    </div>
+
+    <div class="callout reveal" style="margin-top: 2.5rem;">
+      <div class="callout-label">Worth noting</div>
+      <p>This wasn't something they asked for. I identified the problem, assessed whether a better solution was possible, and built it. <strong>That's the mode I operate in</strong>: not waiting to be told what's broken, but finding it and fixing it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── NEXT PROJECT ─── -->
+<div class="next-project">
+  <div class="next-label">Continue Reading</div>
+  <h2 class="next-title">More Case Studies</h2>
+  <div class="next-links">
+    <a href="redbull.html" class="btn btn-gold">Red Bull: Event Design and Systems →</a>
+    <a href="origins.html" class="btn btn-outline">Origins Curriculum: CRM and Automations →</a>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">Ronald Conn III</div>
+  <div class="footer-copy">© 2026 &nbsp;·&nbsp; Fractional Chief of Staff &nbsp;·&nbsp; Austin, Texas</div>
+  <div class="footer-copy" style="display:flex;gap:1.25rem;align-items:center;">
+    <a href="https://www.linkedin.com/in/rc3studios/" target="_blank" rel="noopener" style="color:rgba(241,240,235,0.45);text-decoration:none;font-size:0.8rem;transition:color 0.2s;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(241,240,235,0.45)'">LinkedIn</a>
+    <span style="opacity:0.3;color:#f1f0eb;">·</span>
+    <a href="index.html#contact" style="color:rgba(241,240,235,0.45);text-decoration:none;font-size:0.8rem;transition:color 0.2s;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(241,240,235,0.45)'">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Fire hero elements immediately
+  document.querySelectorAll('.cs-hero .reveal').forEach(el => {
+    setTimeout(() => el.classList.add('is-visible'), 150);
+    observer.unobserve(el);
+  });
+</script>
+
+</body>
+</html>
+                                                                                                                                                       

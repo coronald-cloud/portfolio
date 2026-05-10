@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Ronald Conn III</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f2ea; --bg-alt: #ece8de; --bg-card: #ffffff;
+      --gold: #b8922c; --gold-light: #c9a84c; --gold-dim: rgba(184,146,44,0.1);
+      --text: #1c1a14; --text-muted: #7a7468; --border: rgba(0,0,0,0.08);
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --dark-bg: #0f0e0a; --dark-text: #f1f0eb;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 4rem; background: rgba(245,242,234,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); transition: padding 0.3s; }
+    .nav-logo { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--text); letter-spacing: 0.02em; text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--gold); }
+    .btn { display: inline-flex; align-items: center; padding: 0.65rem 1.5rem; border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.03em; text-decoration: none; transition: all 0.25s; border: none; cursor: pointer; }
+    .btn-gold { background: var(--gold); color: #09090f; }
+    .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.35); }
+
+    /* PAGE HEADER */
+    .page-header { padding: 9rem 4rem 4rem; max-width: 900px; margin: 0 auto; }
+    .page-eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.25rem; }
+    .page-eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--gold); }
+    .page-headline { font-family: var(--font-heading); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: 1.05; color: var(--text); margin-bottom: 1rem; }
+    .page-headline em { color: var(--gold); font-style: italic; }
+    .page-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 600px; }
+
+    /* CLIENT JUMP BUTTONS */
+    .client-jump { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.75rem; }
+    .client-jump a { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; padding: 0.45rem 1rem; border: 1px solid var(--border); border-radius: 20px; transition: all 0.2s; }
+    .client-jump a:hover { color: var(--gold); border-color: var(--gold); background: var(--gold-dim); }
+
+    /* CLIENT SECTIONS */
+    .client-section { padding: 5rem 4rem; border-bottom: 1px solid var(--border); }
+    .client-section:last-child { border-bottom: none; }
+    .client-header { margin-bottom: 2.5rem; }
+    .client-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .client-name { font-family: var(--font-heading); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; color: var(--text); margin-bottom: 0.75rem; }
+    .client-case-link { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(184,146,44,0.3); padding-bottom: 1px; transition: border-color 0.2s; }
+    .client-case-link:hover { border-color: var(--gold); }
+
+    /* GALLERY GRID */
+    .gallery-grid { columns: 3 280px; gap: 1rem; }
+    .gallery-item { break-inside: avoid; margin-bottom: 1rem; position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; background: var(--bg-alt); }
+    .gallery-item img { width: 100%; display: block; transition: transform 0.4s ease; }
+    .gallery-item:hover img { transform: scale(1.03); }
+    .gallery-overlay { position: absolute; inset: 0; background: rgba(15,14,10,0); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+    .gallery-item:hover .gallery-overlay { background: rgba(15,14,10,0.45); }
+    .zoom-icon { font-size: 2rem; color: #fff; opacity: 0; transition: opacity 0.3s; font-style: normal; font-weight: 300; }
+    .gallery-item:hover .zoom-icon { opacity: 1; }
+
+    /* LIGHTBOX */
+    #lightbox { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(10,9,7,0.95); align-items: center; justify-content: center; flex-direction: column; padding: 1.5rem; }
+    #lightbox.open { display: flex; }
+    #lightbox-img { max-width: min(90vw, 1100px); max-height: 78vh; object-fit: contain; border-radius: 6px; box-shadow: 0 24px 80px rgba(0,0,0,0.6); }
+    #lightbox-caption-wrap { max-width: min(90vw, 1100px); width: 100%; margin-top: 1rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    #lightbox-caption { font-size: 0.9rem; color: rgba(241,240,235,0.75); line-height: 1.5; flex: 1; }
+    #lightbox-client { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+    #lightbox-counter { font-size: 0.75rem; color: rgba(241,240,235,0.4); white-space: nowrap; }
+    .lb-close { position: fixed; top: 1.25rem; right: 1.5rem; background: none; border: none; color: rgba(241,240,235,0.6); font-size: 2rem; cursor: pointer; line-height: 1; padding: 0.25rem; transition: color 0.2s; }
+    .lb-close:hover { color: #fff; }
+    .lb-arrow { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(241,240,235,0.7); font-size: 1.5rem; width: 3rem; height: 3rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+    .lb-arrow:hover { background: rgba(255,255,255,0.14); color: #fff; }
+    #lb-prev { left: 1rem; }
+    #lb-next { right: 1rem; }
+
+    /* FOOTER */
+    footer { background: #060609; border-top: 1px solid rgba(255,255,255,0.08); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+    .footer-copy { font-size: 0.8rem; color: rgba(241,240,235,0.45); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .page-header, .client-section, .client-nav { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .gallery-grid { columns: 2 200px; }
+      .lb-arrow { display: none; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+    }
+    @media (max-width: 580px) {
+      .gallery-grid { columns: 1; }
+    }
+
+    /* ─── DROPDOWN ─── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-toggle {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      cursor: pointer;
+    }
+    .nav-dropdown-toggle::after {
+      content: '▾'; font-size: 0.7em; display: inline-block;
+      transition: transform 0.2s;
+    }
+    .nav-dropdown:hover .nav-dropdown-toggle::after { transform: rotate(-180deg); }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.75rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card, #fff);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.4rem 0;
+      list-style: none;
+      min-width: 155px;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.12);
+      z-index: 200;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    /* invisible bridge fills the gap so hover stays active */
+    .nav-dropdown::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: -1rem;
+      right: -1rem;
+      height: 0.9rem;
+    }
+    .nav-dropdown-menu li a {
+      display: block;
+      padding: 0.55rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .nav-dropdown-menu li a:hover { color: var(--gold); background: var(--gold-dim, rgba(184,146,44,0.06)); }
+    .nav-dropdown-menu li a.active { color: var(--gold); font-weight: 600; }
+    .nav-dropdown.active > .nav-dropdown-toggle { color: var(--gold); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">RC III</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="portfolio.html" class="active">Portfolio</a></li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-toggle">Case Studies</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="redbull.html">Red Bull</a></li>
+        <li><a href="wellflower.html">WellFlower</a></li>
+        <li><a href="origins.html">Origins</a></li>
+      </ul>
+    </li>
+  </ul>
+  <a href="index.html#contact" class="btn btn-gold">Let's Talk</a>
+</nav>
+
+<div class="page-header">
+  <div class="page-eyebrow">Full Portfolio</div>
+  <h1 class="page-headline">The Work,<br><em>All of It.</em></h1>
+  <p class="page-sub">Every image, design, system screenshot, and deliverable from across the client roster. Click any image to view full-size.</p>
+  <div class="client-jump">
+    <a href="#wellflower">The WellFlower</a>
+    <a href="#redbull">Red Bull</a>
+    <a href="#origins">Origins Curriculum</a>
+    <a href="#standby">Standby Detroit</a>
+  </div>
+</div>
+
+
+
+  <section class="client-section" id="wellflower">
+    <div class="client-header">
+      <div class="client-label">3D Design · Brand Identity · Retail Interiors · Murals · Packaging · Web</div>
+      <h2 class="client-name">The WellFlower</h2>
+      <a href="wellflower.html" class="client-case-link">Read Case Study →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" data-idx="0" onclick="openLightbox(0)">
+        <img src="images%20needed/wf-hero.jpg.jpg" alt="WellFlower boutique cannabis dispensary — the finished store" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="1" onclick="openLightbox(1)">
+        <img src="images%20needed/wellflower-logo.jpg.jpg" alt="The WellFlower logo — clean, botanical, and deliberately set" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="2" onclick="openLightbox(2)">
+        <img src="images%20needed/wellflower-logo-design-docs%20%281%29.jpg" alt="Logo design documentation — the brand system guidelines and " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="3" onclick="openLightbox(3)">
+        <img src="images%20needed/wellflower-logo-design-docs%20%282%29.jpg" alt="Brand identity docs, typography — the full type system speci" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="4" onclick="openLightbox(4)">
+        <img src="images%20needed/wellflower-logo-design-docs%20%283%29.jpg" alt="Color palette documentation — each swatch defined for consis" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="5" onclick="openLightbox(5)">
+        <img src="images%20needed/wellflower-logo-design-docs%20%284%29.jpg" alt="Brand application examples — showing the identity in context" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="6" onclick="openLightbox(6)">
+        <img src="images%20needed/wellflower-logo-design-docs%20%285%29.jpg" alt="Brand guidelines, final page — the complete identity system " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="7" onclick="openLightbox(7)">
+        <img src="images%20needed/wf-render-floorplan.jpg.jpg" alt="3D floor plan render — used to align the build team before a" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="8" onclick="openLightbox(8)">
+        <img src="images%20needed/wf-render-floorplan-2.jpg.jpg" alt="Alternate floor plan render — explored traffic flow and diff" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="9" onclick="openLightbox(9)">
+        <img src="images%20needed/wf-render-interior.jpg.jpg" alt="Full interior 3D render — the reference image used by contra" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="10" onclick="openLightbox(10)">
+        <img src="images%20needed/wf-render-interior-2.jpg.jpg" alt="Interior render, secondary angle — used to finalize material" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="11" onclick="openLightbox(11)">
+        <img src="images%20needed/wf-render-display.jpg.jpg" alt="3D product display render — presented to the client to visua" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="12" onclick="openLightbox(12)">
+        <img src="images%20needed/wf-render-display-2.jpg.jpg" alt="Display render, alternate configuration — explored different" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="13" onclick="openLightbox(13)">
+        <img src="images%20needed/wellflower-retail-interior-design_02.jpg" alt="Retail interior design concept — material palette and spatia" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="14" onclick="openLightbox(14)">
+        <img src="images%20needed/wellflower-retail-interior-design_03.jpg" alt="Interior design elevation — wall treatments, fixture heights" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="15" onclick="openLightbox(15)">
+        <img src="images%20needed/wf-store-1.jpg.jpg" alt="WellFlower, built and open — the finished store interior at " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="16" onclick="openLightbox(16)">
+        <img src="images%20needed/wf-store-2.jpg.jpg" alt="Second location interior — each build adapted from the origi" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="17" onclick="openLightbox(17)">
+        <img src="images%20needed/wf-store-3.jpg.jpg" alt="Third location interior — a consistent brand environment acr" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="18" onclick="openLightbox(18)">
+        <img src="images%20needed/wf-store-display-1.jpg.jpg" alt="Installed product display case — matching the original rende" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="19" onclick="openLightbox(19)">
+        <img src="images%20needed/wellflower-custom-illustrated-murals_01.jpg" alt="Custom illustrated mural design — original artwork developed" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="20" onclick="openLightbox(20)">
+        <img src="images%20needed/wellflower-custom-illustrated-murals_02.jpg" alt="Mural design panel 2 — part of a continuous botanical narrat" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="21" onclick="openLightbox(21)">
+        <img src="images%20needed/wellflower-custom-illustrated-murals_03.jpg" alt="Mural design panel 3 — detailed illustration in WellFlower's" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="22" onclick="openLightbox(22)">
+        <img src="images%20needed/wellflower-custom-illustrated-murals%20installed%20%281%29.jpg" alt="Mural installed at WellFlower — the custom illustrated desig" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="23" onclick="openLightbox(23)">
+        <img src="images%20needed/wellflower-custom-illustrated-murals%20installed%20%282%29.jpg" alt="Installed mural, second section — continuous illustration co" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="24" onclick="openLightbox(24)">
+        <img src="images%20needed/wellflower-custom-illustrated-murals%20installed%20%283%29.jpg" alt="End wall installation — the completed illustrated environmen" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="25" onclick="openLightbox(25)">
+        <img src="images%20needed/wf-mural-large-installed%20%281%29.jpg" alt="Large-format mural, installed — the full sweep of the custom" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="26" onclick="openLightbox(26)">
+        <img src="images%20needed/wf-mural-large-installed%20%282%29.jpg" alt="Large mural, alternate section — the scale and detail of the" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="27" onclick="openLightbox(27)">
+        <img src="images%20needed/wf-packaging%20%281%29.jpg" alt="WellFlower product packaging — designed to feel premium and " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="28" onclick="openLightbox(28)">
+        <img src="images%20needed/wf-packaging%20%282%29.jpg" alt="Packaging design, alternate SKU — a consistent visual system" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="29" onclick="openLightbox(29)">
+        <img src="images%20needed/wellflower-labels.jpg" alt="Product label suite — every label designed in-house to maint" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="30" onclick="openLightbox(30)">
+        <img src="images%20needed/wf-website-design%20%281%29.png" alt="WellFlower website design — the brand's digital presence, de" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="31" onclick="openLightbox(31)">
+        <img src="images%20needed/wf-website-design%20%282%29.jpg" alt="Website interior page — the product browsing and dispensary " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="32" onclick="openLightbox(32)">
+        <img src="images%20needed/wf-website-design%20%283%29.jpg" alt="Website design, continued — menu and location pages built fo" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="33" onclick="openLightbox(33)">
+        <img src="images%20needed/wf-website-design%20%284%29.png" alt="Website design, final page — the complete digital system del" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="client-section" id="redbull">
+    <div class="client-header">
+      <div class="client-label">Event Design · Graphic Design · Print · Web · Private Events · SOPs</div>
+      <h2 class="client-name">Red Bull</h2>
+      <a href="redbull.html" class="client-case-link">Read Case Study →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" data-idx="34" onclick="openLightbox(34)">
+        <img src="images%20needed/rb-hero.jpg.jpg" alt="Red Bull event — the energy and scale of what we produced to" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="35" onclick="openLightbox(35)">
+        <img src="images%20needed/rb-event-photo.jpg" alt="Live Red Bull event — one of several competitions and activa" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="36" onclick="openLightbox(36)">
+        <img src="images%20needed/rb-event-photo-2.jpg" alt="Behind the scenes at a Red Bull event — logistics, setup, an" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="37" onclick="openLightbox(37)">
+        <img src="images%20needed/redbull-soundclash_06.jpg" alt="Red Bull SoundClash in action — the live music competition f" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="38" onclick="openLightbox(38)">
+        <img src="images%20needed/rb-poster-soundclash.jpg.jpg" alt="Red Bull SoundClash promotional poster, Detroit — original d" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="39" onclick="openLightbox(39)">
+        <img src="images%20needed/pr-poster-dys.jpg.jpg" alt="Red Bull Dance Your Style poster — event promotion for the i" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="40" onclick="openLightbox(40)">
+        <img src="images%20needed/rb-media-assets%20%281%29.jpg" alt="Red Bull digital media asset suite — social and promotional " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="41" onclick="openLightbox(41)">
+        <img src="images%20needed/rb-media-assets%20%282%29.jpg" alt="Media assets, second set — platform-optimized creative built" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="42" onclick="openLightbox(42)">
+        <img src="images%20needed/rb-media-assets%20%283%29.jpg" alt="Media asset library, continued — a range of branded creative" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="43" onclick="openLightbox(43)">
+        <img src="images%20needed/rb-heavy-metal-poster%20%281%29.jpg" alt="Custom artwork for Red Bull's heavy metal programming — orig" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="44" onclick="openLightbox(44)">
+        <img src="images%20needed/rb-heavy-metal-poster%20%282%29.jpg" alt="Heavy metal event poster, second piece — part of a series of" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="45" onclick="openLightbox(45)">
+        <img src="images%20needed/rb-heavy-metal-map%20%281%29.jpg" alt="Custom event map illustration for Red Bull's heavy metal ser" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="46" onclick="openLightbox(46)">
+        <img src="images%20needed/rb-heavy-metal-map%20%282%29.jpg" alt="Event map, second version — illustrative wayfinding covering" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="47" onclick="openLightbox(47)">
+        <img src="images%20needed/rb-heavy-metal-map%20%283%29.jpg" alt="Heavy metal series map, third version — detailed illustratio" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="48" onclick="openLightbox(48)">
+        <img src="images%20needed/rb-cassettes-full.jpg.jpg" alt="The Cassette Dinner piece — custom J-card dinner menus inser" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="49" onclick="openLightbox(49)">
+        <img src="images%20needed/rb-cassette-open.jpg" alt="Cassette open, J-card visible — the folded menu design as it" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="50" onclick="openLightbox(50)">
+        <img src="images%20needed/rb-cassettes-extras%20%281%29.jpg" alt="Cassette production run — the full set of custom tapes produ" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="51" onclick="openLightbox(51)">
+        <img src="images%20needed/rb-cassettes-extras%20%282%29.jpg" alt="Cassettes, alternate angle — the finished pieces in quantity" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="52" onclick="openLightbox(52)">
+        <img src="images%20needed/rb-dinner-menu%20%281%29.jpg" alt="The Cassette Dinner menu, unfolded — the full J-card design " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="53" onclick="openLightbox(53)">
+        <img src="images%20needed/rb-dinner-menu%20%282%29.jpg" alt="Dinner menu, reverse side — the complete two-sided design of" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="54" onclick="openLightbox(54)">
+        <img src="images%20needed/rb-menu-with-food.jpg" alt="The Cassette Dinner, set — menu in place alongside the food " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="55" onclick="openLightbox(55)">
+        <img src="images%20needed/rb-webpage%20%281%29.jpg" alt="Red Bull Media House web page — one of nine pages I built di" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="56" onclick="openLightbox(56)">
+        <img src="images%20needed/rb-webpage%20%282%29.jpg" alt="Web page design, second — event and content pages for Red Bu" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="57" onclick="openLightbox(57)">
+        <img src="images%20needed/rb-webpage%20%283%29.jpg" alt="Media House page, continued — interface and layout work deli" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="58" onclick="openLightbox(58)">
+        <img src="images%20needed/rb-webpage%20%284%29.jpg" alt="Red Bull Media House, fourth page — production and event con" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="59" onclick="openLightbox(59)">
+        <img src="images%20needed/rb-webpage%20%285%29.jpg" alt="Web design, fifth page — consistent design system maintained" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="60" onclick="openLightbox(60)">
+        <img src="images%20needed/rb-webpage%20%286%29.jpg" alt="Media House web page, sixth — part of a comprehensive digita" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="61" onclick="openLightbox(61)">
+        <img src="images%20needed/rb-webpage%20%287%29.jpg" alt="Web page design detail — interaction states and content layo" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="62" onclick="openLightbox(62)">
+        <img src="images%20needed/rb-webpage%20%288%29.jpg" alt="Page design, eighth — the full scope of this web build exten" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="63" onclick="openLightbox(63)">
+        <img src="images%20needed/rb-webpage%20%289%29.jpg" alt="Red Bull Media House, final page — the last of nine pages de" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="client-section" id="origins">
+    <div class="client-header">
+      <div class="client-label">CRM · Automations · Lead Scoring · Social Media · Operations</div>
+      <h2 class="client-name">Origins Curriculum</h2>
+      <a href="origins.html" class="client-case-link">Read Case Study →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" data-idx="64" onclick="openLightbox(64)">
+        <img src="images%20needed/oc-hero.jpg.jpeg" alt="Origins Curriculum — the EdTech homeschool company I embedde" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="65" onclick="openLightbox(65)">
+        <img src="images%20needed/oc-logo-main.jpg" alt="Origins Curriculum logo — the brand identity maintained acro" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="66" onclick="openLightbox(66)">
+        <img src="images%20needed/oc-crm-dashboard.jpeg" alt="GoHighLevel CRM dashboard — the backend I built from scratch" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="67" onclick="openLightbox(67)">
+        <img src="images%20needed/oc-lead-scoring.jpeg" alt="Lead scoring system — built to rate prospects by content eng" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="68" onclick="openLightbox(68)">
+        <img src="images%20needed/oc-email-workflow.jpg" alt="Email automation workflow — one of several behavior-based fu" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="69" onclick="openLightbox(69)">
+        <img src="images%20needed/oc-social%20%281%29.jpg" alt="Origins social content — created as part of managing their f" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="70" onclick="openLightbox(70)">
+        <img src="images%20needed/oc-social%20%282%29.jpg" alt="Social post — part of a consistent content cadence built to " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="71" onclick="openLightbox(71)">
+        <img src="images%20needed/oc-social%20%283%29.jpg" alt="Origins social content, continued — branded graphics produce" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="72" onclick="openLightbox(72)">
+        <img src="images%20needed/oc-social%20%284%29.jpg" alt="Social media graphic — designed and published as part of Ori" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="73" onclick="openLightbox(73)">
+        <img src="images%20needed/oc-social%20%285%29.jpg" alt="Social content — one of dozens of posts produced during the " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="74" onclick="openLightbox(74)">
+        <img src="images%20needed/oc-social%20%286%29.jpg" alt="Origins social series — the full content output spanned mult" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="client-section" id="standby">
+    <div class="client-header">
+      <div class="client-label">Web Design · UI/UX · Digital Presence</div>
+      <h2 class="client-name">Standby Detroit</h2>
+      
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" data-idx="75" onclick="openLightbox(75)">
+        <img src="images%20needed/uiux-website-design-standby-detroit_01.jpg" alt="Standby Detroit — full website design for a Detroit bar and " loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="76" onclick="openLightbox(76)">
+        <img src="images%20needed/uiux-website-design-standby-detroit_02.jpg" alt="Standby website, private events page — designed to drive ven" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="77" onclick="openLightbox(77)">
+        <img src="images%20needed/uiux-website-design-standby-detroit_03.jpg" alt="Standby site, press and editorial — designed to match the ve" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" data-idx="78" onclick="openLightbox(78)">
+        <img src="images%20needed/uiux-website-design-standby-detroit_04.png" alt="Standby Detroit, shop and contact — the complete web presenc" loading="lazy">
+        <div class="gallery-overlay"><span class="zoom-icon">⊕</span></div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">×</button>
+  <button class="lb-arrow" id="lb-prev" onclick="shiftLightbox(-1)">&#8249;</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lb-arrow" id="lb-next" onclick="shiftLightbox(1)">&#8250;</button>
+  <div id="lightbox-caption-wrap">
+    <div>
+      <div id="lightbox-client"></div>
+      <div id="lightbox-caption"></div>
+    </div>
+    <div id="lightbox-counter"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Ronald Conn III</div>
+  <div class="footer-copy">© 2026 &nbsp;·&nbsp; Fractional Chief of Staff &nbsp;·&nbsp; Austin, Texas</div>
+  <div class="footer-copy">
+    <a href="https://www.linkedin.com/in/rc3studios/" target="_blank" rel="noopener" style="color:rgba(241,240,235,0.45);text-decoration:none;font-size:0.8rem;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(241,240,235,0.45)'">LinkedIn</a>
+    &nbsp;·&nbsp;
+    <a href="index.html#contact" style="color:rgba(241,240,235,0.45);text-decoration:none;font-size:0.8rem;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(241,240,235,0.45)'">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const ITEMS = [
+  {src:"images%20needed/wf-hero.jpg.jpg",caption:'WellFlower boutique cannabis dispensary — the finished store environment after a full design, build, and launch engagement.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-logo.jpg.jpg",caption:'The WellFlower logo — clean, botanical, and deliberately set apart from the typical cannabis aesthetic.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-logo-design-docs%20%281%29.jpg",caption:'Logo design documentation — the brand system guidelines and usage rules developed alongside the identity.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-logo-design-docs%20%282%29.jpg",caption:'Brand identity docs, typography — the full type system specified for print and digital use.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-logo-design-docs%20%283%29.jpg",caption:'Color palette documentation — each swatch defined for consistent application across all WellFlower touchpoints.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-logo-design-docs%20%284%29.jpg",caption:'Brand application examples — showing the identity in context across signage, packaging, and collateral.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-logo-design-docs%20%285%29.jpg",caption:'Brand guidelines, final page — the complete identity system handed off to the client and build team.',client:'The WellFlower'},
+  {src:"images%20needed/wf-render-floorplan.jpg.jpg",caption:'3D floor plan render — used to align the build team before a single wall went up. Every fixture placed here first.',client:'The WellFlower'},
+  {src:"images%20needed/wf-render-floorplan-2.jpg.jpg",caption:'Alternate floor plan render — explored traffic flow and different fixture configurations before finalizing the layout.',client:'The WellFlower'},
+  {src:"images%20needed/wf-render-interior.jpg.jpg",caption:'Full interior 3D render — the reference image used by contractors and the design team throughout the entire build.',client:'The WellFlower'},
+  {src:"images%20needed/wf-render-interior-2.jpg.jpg",caption:'Interior render, secondary angle — used to finalize material selections, lighting placement, and spatial proportions.',client:'The WellFlower'},
+  {src:"images%20needed/wf-render-display.jpg.jpg",caption:'3D product display render — presented to the client to visualize the finished display case setup before construction began.',client:'The WellFlower'},
+  {src:"images%20needed/wf-render-display-2.jpg.jpg",caption:'Display render, alternate configuration — explored different shelving approaches before landing on the final design.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-retail-interior-design_02.jpg",caption:'Retail interior design concept — material palette and spatial flow developed for the dispensary environment.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-retail-interior-design_03.jpg",caption:'Interior design elevation — wall treatments, fixture heights, and finish details specified for the contractor.',client:'The WellFlower'},
+  {src:"images%20needed/wf-store-1.jpg.jpg",caption:'WellFlower, built and open — the finished store interior at location one. The render, realized.',client:'The WellFlower'},
+  {src:"images%20needed/wf-store-2.jpg.jpg",caption:'Second location interior — each build adapted from the original render to fit the individual space.',client:'The WellFlower'},
+  {src:"images%20needed/wf-store-3.jpg.jpg",caption:'Third location interior — a consistent brand environment across all three WellFlower dispensaries.',client:'The WellFlower'},
+  {src:"images%20needed/wf-store-display-1.jpg.jpg",caption:'Installed product display case — matching the original render down to the shelf spacing and material finish.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-custom-illustrated-murals_01.jpg",caption:'Custom illustrated mural design — original artwork developed specifically for the WellFlower store environments.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-custom-illustrated-murals_02.jpg",caption:'Mural design panel 2 — part of a continuous botanical narrative running through the retail space.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-custom-illustrated-murals_03.jpg",caption:"Mural design panel 3 — detailed illustration in WellFlower's brand palette, designed to wrap the full wall run.",client:'The WellFlower'},
+  {src:"images%20needed/wellflower-custom-illustrated-murals%20installed%20%281%29.jpg",caption:'Mural installed at WellFlower — the custom illustrated design brought to life on the finished store walls.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-custom-illustrated-murals%20installed%20%282%29.jpg",caption:'Installed mural, second section — continuous illustration covering the full wall across the retail floor.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-custom-illustrated-murals%20installed%20%283%29.jpg",caption:'End wall installation — the completed illustrated environment as customers experience it in store.',client:'The WellFlower'},
+  {src:"images%20needed/wf-mural-large-installed%20%281%29.jpg",caption:'Large-format mural, installed — the full sweep of the custom wall art across the main retail space.',client:'The WellFlower'},
+  {src:"images%20needed/wf-mural-large-installed%20%282%29.jpg",caption:'Large mural, alternate section — the scale and detail of the botanical illustration at full installation.',client:'The WellFlower'},
+  {src:"images%20needed/wf-packaging%20%281%29.jpg",caption:'WellFlower product packaging — designed to feel premium and distinctly branded on the dispensary shelf.',client:'The WellFlower'},
+  {src:"images%20needed/wf-packaging%20%282%29.jpg",caption:'Packaging design, alternate SKU — a consistent visual system applied across the full WellFlower product line.',client:'The WellFlower'},
+  {src:"images%20needed/wellflower-labels.jpg",caption:'Product label suite — every label designed in-house to maintain brand consistency across all product categories.',client:'The WellFlower'},
+  {src:"images%20needed/wf-website-design%20%281%29.png",caption:"WellFlower website design — the brand's digital presence, designed to mirror the quality of the in-store experience.",client:'The WellFlower'},
+  {src:"images%20needed/wf-website-design%20%282%29.jpg",caption:'Website interior page — the product browsing and dispensary information experience.',client:'The WellFlower'},
+  {src:"images%20needed/wf-website-design%20%283%29.jpg",caption:'Website design, continued — menu and location pages built for easy customer navigation.',client:'The WellFlower'},
+  {src:"images%20needed/wf-website-design%20%284%29.png",caption:'Website design, final page — the complete digital system delivered alongside the physical build.',client:'The WellFlower'},
+  {src:"images%20needed/rb-hero.jpg.jpg",caption:'Red Bull event — the energy and scale of what we produced together over a three-plus year partnership.',client:'Red Bull'},
+  {src:"images%20needed/rb-event-photo.jpg",caption:'Live Red Bull event — one of several competitions and activations I designed graphics for and helped coordinate on the ground.',client:'Red Bull'},
+  {src:"images%20needed/rb-event-photo-2.jpg",caption:'Behind the scenes at a Red Bull event — logistics, setup, and making sure the day-of experience ran exactly as planned.',client:'Red Bull'},
+  {src:"images%20needed/redbull-soundclash_06.jpg",caption:'Red Bull SoundClash in action — the live music competition format I supported across multiple U.S. cities.',client:'Red Bull'},
+  {src:"images%20needed/rb-poster-soundclash.jpg.jpg",caption:'Red Bull SoundClash promotional poster, Detroit — original design built for high-impact digital and print distribution.',client:'Red Bull'},
+  {src:"images%20needed/pr-poster-dys.jpg.jpg",caption:'Red Bull Dance Your Style poster — event promotion for the international dance competition, U.S. tour dates.',client:'Red Bull'},
+  {src:"images%20needed/rb-media-assets%20%281%29.jpg",caption:'Red Bull digital media asset suite — social and promotional graphics designed for event marketing campaigns.',client:'Red Bull'},
+  {src:"images%20needed/rb-media-assets%20%282%29.jpg",caption:'Media assets, second set — platform-optimized creative built across the full partnership.',client:'Red Bull'},
+  {src:"images%20needed/rb-media-assets%20%283%29.jpg",caption:"Media asset library, continued — a range of branded creative delivered for Red Bull's event and digital channels.",client:'Red Bull'},
+  {src:"images%20needed/rb-heavy-metal-poster%20%281%29.jpg",caption:"Custom artwork for Red Bull's heavy metal programming — original illustration in a different visual language than the rest of the partnership.",client:'Red Bull'},
+  {src:"images%20needed/rb-heavy-metal-poster%20%282%29.jpg",caption:'Heavy metal event poster, second piece — part of a series of original artwork produced for this programming strand.',client:'Red Bull'},
+  {src:"images%20needed/rb-heavy-metal-map%20%281%29.jpg",caption:"Custom event map illustration for Red Bull's heavy metal series — hand-crafted wayfinding designed for the scale of the venue.",client:'Red Bull'},
+  {src:"images%20needed/rb-heavy-metal-map%20%282%29.jpg",caption:'Event map, second version — illustrative wayfinding covering all event zones and entry points.',client:'Red Bull'},
+  {src:"images%20needed/rb-heavy-metal-map%20%283%29.jpg",caption:'Heavy metal series map, third version — detailed illustration adapted for a different venue layout.',client:'Red Bull'},
+  {src:"images%20needed/rb-cassettes-full.jpg.jpg",caption:'The Cassette Dinner piece — custom J-card dinner menus inserted into working cassette tapes for a Red Bull private event.',client:'Red Bull'},
+  {src:"images%20needed/rb-cassette-open.jpg",caption:'Cassette open, J-card visible — the folded menu design as it appears when a guest pulls it from the case.',client:'Red Bull'},
+  {src:"images%20needed/rb-cassettes-extras%20%281%29.jpg",caption:'Cassette production run — the full set of custom tapes produced and assembled for the private dinner.',client:'Red Bull'},
+  {src:"images%20needed/rb-cassettes-extras%20%282%29.jpg",caption:'Cassettes, alternate angle — the finished pieces in quantity before event delivery.',client:'Red Bull'},
+  {src:"images%20needed/rb-dinner-menu%20%281%29.jpg",caption:'The Cassette Dinner menu, unfolded — the full J-card design before it was folded and inserted into the tape.',client:'Red Bull'},
+  {src:"images%20needed/rb-dinner-menu%20%282%29.jpg",caption:'Dinner menu, reverse side — the complete two-sided design of the folded J-card insert.',client:'Red Bull'},
+  {src:"images%20needed/rb-menu-with-food.jpg",caption:'The Cassette Dinner, set — menu in place alongside the food it was designed to accompany.',client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%281%29.jpg",caption:'Red Bull Media House web page — one of nine pages I built directly for the media and production arm of the organization.',client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%282%29.jpg",caption:"Web page design, second — event and content pages for Red Bull's digital presence.",client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%283%29.jpg",caption:'Media House page, continued — interface and layout work delivered to spec.',client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%284%29.jpg",caption:"Red Bull Media House, fourth page — production and event content structured for the media division's audience.",client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%285%29.jpg",caption:'Web design, fifth page — consistent design system maintained across all nine delivered pages.',client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%286%29.jpg",caption:'Media House web page, sixth — part of a comprehensive digital build spanning multiple content types.',client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%287%29.jpg",caption:'Web page design detail — interaction states and content layout refined throughout the engagement.',client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%288%29.jpg",caption:'Page design, eighth — the full scope of this web build extended well beyond a single page type.',client:'Red Bull'},
+  {src:"images%20needed/rb-webpage%20%289%29.jpg",caption:'Red Bull Media House, final page — the last of nine pages delivered as part of this engagement.',client:'Red Bull'},
+  {src:"images%20needed/oc-hero.jpg.jpeg",caption:'Origins Curriculum — the EdTech homeschool company I embedded with as a core operator for an extended engagement.',client:'Origins Curriculum'},
+  {src:"images%20needed/oc-logo-main.jpg",caption:'Origins Curriculum logo — the brand identity maintained across all materials produced during the engagement.',client:'Origins Curriculum'},
+  {src:"images%20needed/oc-crm-dashboard.jpeg",caption:"GoHighLevel CRM dashboard — the backend I built from scratch to manage Origins' entire sales and operations pipeline.",client:'Origins Curriculum'},
+  {src:"images%20needed/oc-lead-scoring.jpeg",caption:'Lead scoring system — built to rate prospects by content engagement and automatically route hot leads to sales staff in real time.',client:'Origins Curriculum'},
+  {src:"images%20needed/oc-email-workflow.jpg",caption:'Email automation workflow — one of several behavior-based funnels architected to nurture leads through the Origins pipeline.',client:'Origins Curriculum'},
+  {src:"images%20needed/oc-social%20%281%29.jpg",caption:'Origins social content — created as part of managing their full social media presence across platforms.',client:'Origins Curriculum'},
+  {src:"images%20needed/oc-social%20%282%29.jpg",caption:'Social post — part of a consistent content cadence built to grow the Origins audience and drive enrollment.',client:'Origins Curriculum'},
+  {src:"images%20needed/oc-social%20%283%29.jpg",caption:'Origins social content, continued — branded graphics produced alongside video editing and copywriting.',client:'Origins Curriculum'},
+  {src:"images%20needed/oc-social%20%284%29.jpg",caption:"Social media graphic — designed and published as part of Origins' ongoing content strategy.",client:'Origins Curriculum'},
+  {src:"images%20needed/oc-social%20%285%29.jpg",caption:"Social content — one of dozens of posts produced during the engagement managing Origins' platforms.",client:'Origins Curriculum'},
+  {src:"images%20needed/oc-social%20%286%29.jpg",caption:'Origins social series — the full content output spanned multiple platforms and content formats.',client:'Origins Curriculum'},
+  {src:"images%20needed/uiux-website-design-standby-detroit_01.jpg",caption:'Standby Detroit — full website design for a Detroit bar and event venue. Landing page with atmosphere-first layout.',client:'Standby Detroit'},
+  {src:"images%20needed/uiux-website-design-standby-detroit_02.jpg",caption:"Standby website, private events page — designed to drive venue bookings and communicate the space's character.",client:'Standby Detroit'},
+  {src:"images%20needed/uiux-website-design-standby-detroit_03.jpg",caption:"Standby site, press and editorial — designed to match the venue's distinctly Detroit aesthetic.",client:'Standby Detroit'},
+  {src:"images%20needed/uiux-website-design-standby-detroit_04.png",caption:'Standby Detroit, shop and contact — the complete web presence built from scratch, covering all key sections.',client:'Standby Detroit'},
+];
+  let cur = 0;
+
+  function openLightbox(idx) {
+    cur = idx;
+    render();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function shiftLightbox(dir) {
+    cur = (cur + dir + ITEMS.length) % ITEMS.length;
+    render();
+  }
+
+  function render() {
+    const it = ITEMS[cur];
+    document.getElementById('lightbox-img').src = it.src;
+    document.getElementById('lightbox-img').alt = it.caption;
+    document.getElementById('lightbox-caption').textContent = it.caption;
+    document.getElementById('lightbox-client').textContent = it.client;
+    document.getElementById('lightbox-counter').textContent = (cur + 1) + ' / ' + ITEMS.length;
+  }
+
+  // Close on backdrop click
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') shiftLightbox(-1);
+    if (e.key === 'ArrowRight') shiftLightbox(1);
+  });
+</script>
+
+</body>
+</html>

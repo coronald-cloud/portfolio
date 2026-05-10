@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asset Checklist — RC III Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f2ea;
+      --bg-alt: #ece8de;
+      --bg-card: #ffffff;
+      --gold: #b8922c;
+      --gold-dim: rgba(184,146,44,0.1);
+      --text: #1c1a14;
+      --text-muted: #7a7468;
+      --border: rgba(0,0,0,0.08);
+      --green: #4a7c59;
+      --green-dim: rgba(74,124,89,0.1);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      padding: 3rem 2rem 5rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── PROGRESS BAR ─── */
+    .progress-wrap {
+      background: var(--bg-alt);
+      border-radius: 6px;
+      height: 6px;
+      margin: 1.5rem 0 0.5rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 6px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .progress-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .progress-label span { font-weight: 600; color: var(--text); }
+
+    /* ─── SECTIONS ─── */
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .section-count {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    /* ─── CHECKLIST ITEMS ─── */
+    .checklist {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.85rem 1.1rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+
+    .check-item:last-child { border-bottom: none; }
+    .check-item:hover { background: var(--bg); }
+    .check-item.done { background: var(--green-dim); }
+    .check-item.done:hover { background: rgba(74,124,89,0.14); }
+
+    .check-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+
+    .check-item.done .check-box {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .check-box svg {
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .check-item.done .check-box svg { opacity: 1; }
+
+    .check-content { flex: 1; min-width: 0; }
+
+    .check-filename {
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+      color: var(--text);
+      transition: color 0.15s;
+    }
+
+    .check-item.done .check-filename {
+      color: var(--green);
+      text-decoration: line-through;
+      text-decoration-color: rgba(74,124,89,0.4);
+    }
+
+    .check-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+      line-height: 1.5;
+    }
+
+    .check-item.done .check-desc { opacity: 0.6; }
+
+    .optional-badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+
+    .already-badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid rgba(74,124,89,0.2);
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+
+    /* ─── FOOTER ─── */
+    .done-message {
+      display: none;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--green-dim);
+      border: 1px solid rgba(74,124,89,0.2);
+      border-radius: 10px;
+      margin-top: 2rem;
+      font-weight: 600;
+      color: var(--green);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="site-label">RC III — Site Assets</div>
+  <h1>Image &amp; Video Checklist</h1>
+  <p class="subtitle">Check off each file as you gather it. Progress saves automatically.</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+  <div class="progress-label"><span id="progress-text">0 of 27</span> assets gathered</div>
+</header>
+
+<!-- ── MAIN SITE ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">Main Site — index.html</div>
+    <div class="section-count" id="count-main"></div>
+  </div>
+  <div class="checklist" data-group="main">
+    <div class="check-item done" data-id="ronald-conn">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">ronald-conn.jpg</div>
+        <div class="check-desc">Your B&W cinematic portrait — hero, photo panel, about section</div>
+      </div>
+      <div class="already-badge">Have it</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WELLFLOWER ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">The WellFlower — wellflower.html</div>
+    <div class="section-count" id="count-wf"></div>
+  </div>
+  <div class="checklist" data-group="wf">
+    <div class="check-item" data-id="wf-hero">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-hero.jpg</div>
+        <div class="check-desc">Best store render or finished interior — the wow shot at the top of the page</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="wf-logo">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-logo.jpg</div>
+        <div class="check-desc">The WellFlower logo or brand mockup on a clean background</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="wf-render-floorplan">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-render-floorplan.jpg</div>
+        <div class="check-desc">3D render — wide-angle interior or floor plan view</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="wf-render-display">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-render-display.jpg</div>
+        <div class="check-desc">3D render — display cases, lighting, or product area close-up</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="wf-store-1">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-store-1.jpg</div>
+        <div class="check-desc">Finished store photo — Location 1 (interior or exterior)</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="wf-store-2">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-store-2.jpg</div>
+        <div class="check-desc">Finished store photo — Location 2</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="wf-store-3">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-store-3.jpg</div>
+        <div class="check-desc">Finished store photo — Location 3 (use your best shot again if only 1–2 locations were photographed)</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="wf-packaging">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-packaging.jpg</div>
+        <div class="check-desc">Product packaging design — bags, jars, boxes, tins</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="wf-labels">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">wf-labels.jpg</div>
+        <div class="check-desc">Label designs, sticker sheets, or brand asset collateral</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RED BULL ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">Red Bull — redbull.html</div>
+    <div class="section-count" id="count-rb"></div>
+  </div>
+  <div class="checklist" data-group="rb">
+    <div class="check-item" data-id="rb-hero">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-hero.jpg</div>
+        <div class="check-desc">Strongest single image — bold event poster at large size, or a great event photo</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-poster-soundclash">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-poster-soundclash.jpg</div>
+        <div class="check-desc">SoundClash event poster — Detroit's Russell Industrial Center</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-poster-dys">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-poster-dys.jpg</div>
+        <div class="check-desc">Dance Your Style poster or promotional graphic</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-media-assets">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-media-assets.jpg</div>
+        <div class="check-desc">Digital media assets — Instagram graphics, web banners, or a flat lay of multiple pieces</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-cassette-full">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-cassette-full.jpg</div>
+        <div class="check-desc">⭐ The cassette tape with J-card menu inserted — styled on a dark surface. Most important image on this page.</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-cassette-open">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-cassette-open.jpg</div>
+        <div class="check-desc">Case open showing menu insert, or J-card unfolded flat</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-dinner-menu">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-dinner-menu.jpg</div>
+        <div class="check-desc">The dinner menu design — printed flat, as a mockup, or unfolded</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-webpage">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-webpage.jpg</div>
+        <div class="check-desc">Screenshot of the web page(s) you built for Red Bull Media House</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-event-photo">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-event-photo.jpg</div>
+        <div class="check-desc">A live event photo — crowd, stage, dinner setup, or competition moment</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="rb-event-clip">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">rb-event-clip.mp4</div>
+        <div class="check-desc">15–30 sec clip from a live event — crowd energy, competition, or dinner atmosphere. No audio needed.</div>
+      </div>
+      <div class="optional-badge">Optional</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ORIGINS ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">Origins Curriculum — origins.html</div>
+    <div class="section-count" id="count-oc"></div>
+  </div>
+  <div class="checklist" data-group="oc">
+    <div class="check-item" data-id="oc-hero">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-hero.jpg</div>
+        <div class="check-desc">Wide GHL dashboard screenshot — contacts, campaigns, pipeline, or curriculum products. Crop any customer data.</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-brand">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-brand.jpg</div>
+        <div class="check-desc">Origins Curriculum website, logo, or product page screenshot</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-crm-dashboard">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-crm-dashboard.jpg</div>
+        <div class="check-desc">GHL products, courses, or pipeline view — shows the scale of what you built</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-lead-scoring">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-lead-scoring.jpg</div>
+        <div class="check-desc">GHL lead scoring setup — score fields, contact scoring view, or the automation that triggers scoring</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-sales-notification">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-sales-notification.jpg</div>
+        <div class="check-desc">The real-time alert that fires to sales staff — GHL notification, email, or SMS screenshot</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-email-workflow">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-email-workflow.jpg</div>
+        <div class="check-desc">⭐ The automation workflow map in GHL — the visual flowchart showing email logic and branching. Zoom out to capture as much as possible.</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-social">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-social.jpg</div>
+        <div class="check-desc">Social media content you created — a post, graphic, or flat lay of multiple pieces</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-video-thumb">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-video-thumb.jpg</div>
+        <div class="check-desc">Thumbnail or still frame from a video you edited for them</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-ad-creative">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-ad-creative.jpg</div>
+        <div class="check-desc">An ad creative or paid campaign graphic you made for them</div>
+      </div>
+    </div>
+    <div class="check-item" data-id="oc-automation-walkthrough">
+      <div class="check-box"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-filename">oc-automation-walkthrough.mp4</div>
+        <div class="check-desc">30–60 sec screen recording scrolling through the GHL automation workflow. No audio needed. Very compelling.</div>
+      </div>
+      <div class="optional-badge">Optional</div>
+    </div>
+  </div>
+</div>
+
+<div class="done-message" id="done-message">
+  🎉 All assets gathered — drop them in the folder and let Claude wire them in!
+</div>
+
+<script>
+  const STORAGE_KEY = 'rciii-checklist';
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+  }
+
+  function saveState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.check-item');
+    const done = document.querySelectorAll('.check-item.done');
+    const total = all.length;
+    const count = done.length;
+    const pct = Math.round((count / total) * 100);
+
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = count + ' of ' + total;
+
+    document.getElementById('done-message').style.display = count === total ? 'block' : 'none';
+
+    // Group counts
+    document.querySelectorAll('.checklist').forEach(group => {
+      const gId = group.dataset.group;
+      const gAll = group.querySelectorAll('.check-item');
+      const gDone = group.querySelectorAll('.check-item.done');
+      const countEl = document.getElementById('count-' + gId);
+      if (countEl) countEl.textContent = gDone.length + ' / ' + gAll.length;
+    });
+  }
+
+  // Load saved state
+  const state = loadState();
+  document.querySelectorAll('.check-item[data-id]').forEach(item => {
+    if (state[item.dataset.id]) item.classList.add('done');
+  });
+
+  // Click handler
+  document.querySelectorAll('.check-item').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('done');
+      const s = loadState();
+      if (item.classList.contains('done')) {
+        s[item.dataset.id] = true;
+      } else {
+        delete s[item.dataset.id];
+      }
+      saveState(s);
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>

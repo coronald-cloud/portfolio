@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Origins Curriculum — Ronald Conn III</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f2ea;
+      --bg-card: #ffffff;
+      --bg-alt: #ece8de;
+      --gold: #b8922c;
+      --gold-light: #c9a84c;
+      --gold-dim: rgba(184, 146, 44, 0.1);
+      --charcoal: #2a2820;
+      --charcoal-dim: rgba(42, 40, 32, 0.06);
+      --gray: #c0bdb6;
+      --gray-dim: rgba(192, 189, 182, 0.18);
+      --text: #1c1a14;
+      --text-muted: #7a7468;
+      --border: rgba(0,0,0,0.08);
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --dark-bg: #0f0e0a;
+      --dark-text: #f1f0eb;
+      --dark-muted: rgba(241,240,235,0.55);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 4rem; background: rgba(245, 242, 234, 0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--text); text-decoration: none; }
+    .nav-back { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+    .nav-back:hover { color: var(--gold); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--gold); font-weight: 600; }
+    .nav-back svg { width: 16px; height: 16px; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.5rem; border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.03em; text-decoration: none; cursor: pointer; transition: all 0.25s; border: none; }
+    .btn-gold { background: var(--gold); color: #09090f; }
+    .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.35); }
+    .btn-outline { background: transparent; color: var(--gold); border: 1.5px solid var(--gold); }
+    .btn-outline:hover { background: var(--gold-dim); transform: translateY(-1px); }
+
+    .cs-hero { padding: 10rem 4rem 6rem; max-width: 1000px; margin: 0 auto; }
+    .cs-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .cs-eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--gold); }
+    .cs-client { font-family: var(--font-heading); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; line-height: 1.0; color: var(--text); margin-bottom: 1rem; }
+    .cs-client em { color: var(--gold); font-style: italic; }
+    .cs-subtitle { font-family: var(--font-heading); font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 700; font-style: italic; color: var(--text-muted); margin-bottom: 2rem; max-width: 700px; }
+    .cs-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 3rem; }
+    .cs-tag { display: inline-block; padding: 0.35rem 0.85rem; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.18); color: var(--gold); border-radius: 20px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .cs-divider { width: 100%; height: 1px; background: var(--border); margin-bottom: 3rem; }
+
+    .cs-hero-image { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 4rem 6rem; }
+
+    /* ─── REAL IMAGES & VIDEO ─── */
+    .case-img { width: 100%; display: block; border-radius: 14px; object-fit: cover; }
+    .case-img--tall { height: 480px; }
+    .case-img--wide { height: 320px; }
+    .case-img--short { height: 240px; }
+    .case-img--auto { height: auto; max-height: 600px; object-fit: contain; }
+    .case-video { width: 100%; display: block; border-radius: 14px; background: #000; }
+
+    .cs-section { padding: 5rem 4rem; max-width: 1200px; margin: 0 auto; }
+    .cs-section--alt { background: var(--bg-alt); max-width: 100%; padding: 5rem 4rem; }
+    .cs-section--alt .cs-section-inner { max-width: 1200px; margin: 0 auto; }
+    .cs-section--dark { background: var(--dark-bg); max-width: 100%; padding: 6rem 4rem; }
+    .cs-section--dark .cs-section-inner { max-width: 1200px; margin: 0 auto; }
+
+    .section-label { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; }
+    .section-label::before { content: ''; display: block; width: 1.5rem; height: 1px; background: var(--gold); }
+
+    .cs-section-headline { font-family: var(--font-heading); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900; line-height: 1.12; color: var(--text); margin-bottom: 1.25rem; }
+    .cs-section--dark .cs-section-headline { color: var(--dark-text); }
+
+    .cs-body { font-size: 1.05rem; color: var(--text-muted); line-height: 1.9; max-width: 680px; margin-bottom: 1.25rem; }
+    .cs-body strong { color: var(--text); }
+    .cs-section--dark .cs-body { color: var(--dark-muted); }
+    .cs-section--dark .cs-body strong { color: var(--dark-text); }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .two-col--reverse { direction: rtl; }
+    .two-col--reverse > * { direction: ltr; }
+    .two-col--top { align-items: start; }
+
+    .img-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .img-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .img-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+    .callout { background: var(--bg-card); border: 1px solid rgba(184,146,44,0.2); border-left: 4px solid var(--gold); border-radius: 10px; padding: 2rem 2.25rem; margin: 2rem 0; }
+    .callout-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+    .callout p { font-size: 1rem; color: var(--text-muted); line-height: 1.8; }
+    .callout p strong { color: var(--text); }
+
+    /* ─── PIPELINE DIAGRAM ─── */
+    .pipeline {
+      margin: 2.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .pipeline-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pipeline-step:last-child { border-bottom: none; }
+
+    .pipeline-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    .pipeline-content h4 {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+
+    .pipeline-content p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ─── FUNNEL VISUAL ─── */
+    .funnel-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .funnel-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .funnel-step::after {
+      content: '→';
+      position: absolute;
+      right: -0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: 700;
+      z-index: 1;
+    }
+
+    .funnel-step:last-child::after { display: none; }
+
+    .funnel-icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    .funnel-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .funnel-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ─── VIDEO CARD ─── */
+    .video-card {
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+      position: relative;
+    }
+
+    /* ─── OUTCOMES ─── */
+    .outcomes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+    .outcome-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.75rem; text-align: center; }
+    .outcome-number { font-family: var(--font-heading); font-size: 2.8rem; font-weight: 900; color: var(--gold); line-height: 1.0; margin-bottom: 0.4rem; }
+    .outcome-label { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ─── NEXT PROJECT ─── */
+    .next-project { padding: 5rem 4rem; background: var(--bg-alt); text-align: center; }
+    .next-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+    .next-title { font-family: var(--font-heading); font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; color: var(--text); margin-bottom: 1.75rem; }
+    .next-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+    footer { background: #060609; border-top: 1px solid rgba(255,255,255,0.08); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+    .footer-copy { font-size: 0.8rem; color: rgba(241,240,235,0.45); }
+
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.22s; } .d3 { transition-delay: 0.35s; } .d4 { transition-delay: 0.5s; }
+
+    @media (max-width: 960px) {
+      nav { padding: 1rem 2rem; }
+      .cs-hero, .cs-section, .cs-hero-image { padding-left: 2rem; padding-right: 2rem; }
+      .cs-section--alt, .cs-section--dark { padding: 4rem 2rem; }
+      .two-col, .two-col--reverse { grid-template-columns: 1fr; gap: 2.5rem; direction: ltr; }
+      .img-grid-2, .img-grid-3, .img-grid-6 { grid-template-columns: 1fr 1fr; }
+      .outcomes { grid-template-columns: 1fr 1fr; }
+      .funnel-grid { grid-template-columns: 1fr 1fr; }
+      .funnel-step::after { display: none; }
+      .next-project { padding: 4rem 2rem; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; padding: 1.5rem 2rem; }
+    }
+    @media (max-width: 600px) {
+      .outcomes { grid-template-columns: 1fr; }
+      .funnel-grid { grid-template-columns: 1fr; }
+      .img-grid-2, .img-grid-3, .img-grid-6 { grid-template-columns: 1fr; }
+      .case-img--tall { height: 280px; }
+      .case-img--wide { height: 200px; }
+    }
+
+    /* ─── DROPDOWN ─── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-toggle {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      cursor: pointer;
+    }
+    .nav-dropdown-toggle::after {
+      content: '▾'; font-size: 0.7em; display: inline-block;
+      transition: transform 0.2s;
+    }
+    .nav-dropdown:hover .nav-dropdown-toggle::after { transform: rotate(-180deg); }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.75rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card, #fff);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.4rem 0;
+      list-style: none;
+      min-width: 155px;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.12);
+      z-index: 200;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    /* invisible bridge fills the gap so hover stays active */
+    .nav-dropdown::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: -1rem;
+      right: -1rem;
+      height: 0.9rem;
+    }
+    .nav-dropdown-menu li a {
+      display: block;
+      padding: 0.55rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .nav-dropdown-menu li a:hover { color: var(--gold); background: var(--gold-dim, rgba(184,146,44,0.06)); }
+    .nav-dropdown-menu li a.active { color: var(--gold); font-weight: 600; }
+    .nav-dropdown.active > .nav-dropdown-toggle { color: var(--gold); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">RC III</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li class="nav-dropdown active">
+      <a href="#" class="nav-dropdown-toggle">Case Studies</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="redbull.html">Red Bull</a></li>
+        <li><a href="wellflower.html">WellFlower</a></li>
+        <li><a href="origins.html" class="active">Origins</a></li>
+      </ul>
+    </li>
+  </ul>
+  <a href="index.html#contact" class="btn btn-gold">Let's Talk</a>
+</nav>
+
+<!-- ─── CASE STUDY HERO ─── -->
+<div class="cs-hero">
+  <div class="cs-eyebrow reveal">Case Study · EdTech Operations</div>
+  <h1 class="cs-client reveal d1">Origins <em>Curriculum</em></h1>
+  <p class="cs-subtitle reveal d2">Embedded as a full-stack operator: platform migration, CRM build, lead scoring infrastructure, and the automations that made the whole thing run.</p>
+  <div class="cs-meta reveal d3">
+    <span class="cs-tag">GoHighLevel</span>
+    <span class="cs-tag">Platform Migration</span>
+    <span class="cs-tag">CRM Architecture</span>
+    <span class="cs-tag">Lead Scoring</span>
+    <span class="cs-tag">Email Automations</span>
+    <span class="cs-tag">Sales Enablement</span>
+    <span class="cs-tag">Operations</span>
+    <span class="cs-tag">Video Editing</span>
+  </div>
+  <div class="cs-divider"></div>
+</div>
+
+<!-- ─── HERO IMAGE ─── -->
+<div class="cs-hero-image">
+  <img src="images%20needed/oc-hero.jpg.jpeg" alt="Origins Curriculum platform overview" class="case-img case-img--tall reveal">
+</div>
+
+<!-- ─── SECTION 1: CONTEXT ─── -->
+<div class="cs-section--alt">
+  <div class="cs-section-inner">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="section-label">The Organization</div>
+        <h2 class="cs-section-headline">A homeschool EdTech company with a growing product and a backend that couldn't keep up.</h2>
+        <p class="cs-body">Origins Curriculum creates home school curriculum for preschool through 5th grade, hosted entirely online. They were growing, but their systems weren't. Their CRM couldn't handle their product complexity, their automation was minimal, and their team was doing manually what should have been happening automatically.</p>
+        <p class="cs-body">I came in as their <strong>Customer Experience & Systems Designer</strong>, a title that barely covers what I actually did. I was the operator who built the machine.</p>
+        <a href="https://originscurriculum.com/our-team/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.88rem; font-weight: 600; color: var(--gold); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; margin-top: 0.5rem;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='transparent'">See my role on their team →</a>
+      </div>
+      <div class="reveal d2">
+        <img src="images%20needed/oc-logo-main.jpg" alt="Origins Curriculum brand and product" class="case-img case-img--auto" style="border-radius:14px;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION 2: MIGRATION ─── -->
+<div class="cs-section">
+  <div class="section-label reveal">Phase 01</div>
+  <h2 class="cs-section-headline reveal d1">Moving the whole database.<br>Without losing a thing.</h2>
+
+  <div class="two-col two-col--top">
+    <div>
+      <p class="cs-body reveal d1">Origins needed to move their entire digital operation from one platform to GoHighLevel, a complex, all-in-one CRM and marketing platform built for serious scale. This wasn't a casual migration. It meant <strong>replicating every product, course, order form, and piece of curriculum content</strong> in a new system without breaking what was already working.</p>
+      <p class="cs-body reveal d2">I managed the transfer, auditing the existing architecture, mapping it to the GHL structure, and migrating the data systematically. The 12-month curriculum cycle alone (materials for preschool through 5th grade) had to be loaded into the new system in a way that was clean, navigable, and ready to sell against immediately.</p>
+
+      <div class="callout reveal d3">
+        <div class="callout-label">The Scope</div>
+        <p>Full database transfer. Products. Courses. Order forms. 12 months of curriculum content across 6 grade levels. All rebuilt inside GoHighLevel and made operational, without breaking existing customer access.</p>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <img src="images%20needed/oc-crm-dashboard.jpeg" alt="GoHighLevel CRM dashboard showing products and contact structure" class="case-img case-img--tall">
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION 3: LEAD SCORING ─── -->
+<div class="cs-section--dark">
+  <div class="cs-section-inner">
+    <div class="section-label" style="color: var(--gold);">Phase 02: The System That Changed Their Sales</div>
+    <h2 class="cs-section-headline" style="color: var(--dark-text); max-width: 680px;">I built a lead scoring system that told the sales team exactly who to call, and when.</h2>
+
+    <div class="two-col two-col--top" style="margin-top: 3rem;">
+      <div>
+        <p class="cs-body">Before I built this system, the sales team was working blind. Leads came in, and someone had to manually decide who to follow up with, when, and how. Hot prospects sat untouched. Cold leads got called. Time was wasted.</p>
+        <p class="cs-body">I architected a <strong style="color: var(--dark-text);">behavior-based lead scoring system</strong> that rated every prospect based on how they engaged with Origins' content. Every meaningful interaction (an email response, a sample download, a page visit) incremented their score.</p>
+        <p class="cs-body">When a lead hit a threshold or took a high-intent action, <strong style="color: var(--dark-text);">the system automatically notified the appropriate sales team member in real time</strong>, with context on what the prospect had done. The call or email that came next wasn't a cold outreach. It was perfectly timed follow-up on something the prospect had just done.</p>
+      </div>
+
+      <div>
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <div class="pipeline-num">1</div>
+            <div class="pipeline-content">
+              <h4>Lead enters the system</h4>
+              <p>Prospect signs up, downloads a sample, or engages with content. Scoring begins.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">2</div>
+            <div class="pipeline-content">
+              <h4>Score accumulates automatically</h4>
+              <p>Each interaction (email open, reply, download, revisit) adds weighted points to their lead score.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">3</div>
+            <div class="pipeline-content">
+              <h4>High-intent trigger fires</h4>
+              <p>Prospect replies to an email or downloads a curriculum sample. Score crosses a threshold.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">4</div>
+            <div class="pipeline-content">
+              <h4>Sales staff notified instantly</h4>
+              <p>The right team member gets an alert, with full context, to make the call or send the email right now, while the prospect is warm.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">5</div>
+            <div class="pipeline-content">
+              <h4>Lead assigned to closer</h4>
+              <p>Point setters and sales staff receive qualified, warm leads automatically. No manual sorting required.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead scoring screenshot + automation walkthrough video -->
+    <div class="img-grid-2" style="margin-top: 3rem;">
+      <img src="images%20needed/oc-lead-scoring.jpeg" alt="GoHighLevel lead scoring setup and contact score fields" class="case-img case-img--wide reveal d1">
+      <div class="video-card reveal d2">
+        <video src="images%20needed/oc-automation-walkthrough_compressed.mp4" autoplay muted loop playsinline class="case-video" style="max-height: 320px; object-fit: cover;"></video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION 4: EMAIL FUNNELS ─── -->
+<div class="cs-section--alt">
+  <div class="cs-section-inner">
+    <div class="section-label reveal">Phase 03</div>
+    <h2 class="cs-section-headline reveal d1">Email funnels that changed based on what people actually did.</h2>
+    <p class="cs-body reveal d2">The email automation system I built wasn't a single sequence everyone went through. It was a <strong>behavior-responsive architecture</strong>. Every action a prospect took could route them into a different campaign, with tailored offers, different timing, and unique messaging based on where they were in the journey.</p>
+    <p class="cs-body reveal d3">Purchased one product but not another? They went into a relevant cross-sell sequence. Downloaded a free sample but didn't buy? They went into a nurture campaign with an offer timed for when they were most likely to convert. Responded to an email? Sales gets notified and the automated sequence pauses.</p>
+
+    <div class="funnel-grid reveal" style="margin-top: 2.5rem;">
+      <div class="funnel-step">
+        <span class="funnel-icon">📥</span>
+        <div class="funnel-title">Enters System</div>
+        <div class="funnel-desc">Signup, download, or referral</div>
+      </div>
+      <div class="funnel-step">
+        <span class="funnel-icon">🔍</span>
+        <div class="funnel-title">Behavior Tracked</div>
+        <div class="funnel-desc">Clicks, opens, downloads, replies</div>
+      </div>
+      <div class="funnel-step">
+        <span class="funnel-icon">🔀</span>
+        <div class="funnel-title">Routed by Signal</div>
+        <div class="funnel-desc">Unique campaign based on action taken</div>
+      </div>
+      <div class="funnel-step">
+        <span class="funnel-icon">🎯</span>
+        <div class="funnel-title">Right Offer, Right Time</div>
+        <div class="funnel-desc">Personalized outreach at peak intent</div>
+      </div>
+    </div>
+
+    <img src="images%20needed/oc-email-workflow.jpg" alt="GHL email automation workflow map, the visual campaign logic" class="case-img case-img--wide reveal" style="margin-top: 2rem;">
+  </div>
+</div>
+
+<!-- ─── SECTION 4B: AUTOMATIONS IN ACTION ─── -->
+<div class="cs-section--dark">
+  <div class="cs-section-inner">
+    <div class="section-label reveal" style="color: var(--gold);">See It Running</div>
+    <h2 class="cs-section-headline reveal d1" style="color: var(--dark-text); max-width: 780px;">This is what automation architecture actually looks like inside GoHighLevel.</h2>
+    <p class="cs-body reveal d2">Most people talk about automation in the abstract. These videos show the real thing — the workflows I built, the logic that drives them, and how the system behaves once a lead enters the pipeline. If you've been wondering what a fully operational CRM backend looks like, this is it.</p>
+
+    <div class="reveal d2" style="margin-top: 3rem;">
+      <div style="background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.15); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; max-width: 720px;">
+        <div style="font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem;">Automation Walkthrough</div>
+        <p style="font-size: 0.9rem; color: var(--dark-muted); line-height: 1.7; margin: 0;">A full walkthrough of the lead scoring and routing automation. Watch how a contact moves through the system from first touch to sales-ready — triggered, scored, and assigned without a single manual step.</p>
+      </div>
+      <div class="video-card" style="border: 1px solid rgba(255,255,255,0.07); max-width: 960px;">
+        <video src="images%20needed/oc-automation-walkthrough_compressed.mp4" controls playsinline preload="metadata" class="case-video" style="aspect-ratio: 16/9; object-fit: cover;"></video>
+      </div>
+    </div>
+
+    <div class="callout reveal" style="margin-top: 3rem; background: rgba(255,255,255,0.03); border-color: rgba(201,168,76,0.25);">
+      <div class="callout-label">What This Means for You</div>
+      <p style="color: var(--dark-muted);">If your business has a CRM you're not using to its potential, a sales process that relies too much on memory and manual effort, or email sequences that send the same thing to everyone — <strong style="color: var(--dark-text);">this is exactly the kind of infrastructure I build.</strong> I can architect it, implement it, document it, and train your team to run it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION 5: EVERYTHING ELSE ─── -->
+<div class="cs-section">
+  <div class="section-label reveal">The Day-to-Day</div>
+  <h2 class="cs-section-headline reveal d1">The systems were only half of it.</h2>
+  <p class="cs-body reveal d2">While building out the backend infrastructure, I was also running the operational side of the business. <strong>Customer support, inbox management, social media, video editing, and content production</strong>, all happening concurrently with the CRM work. This is what "one person doing 30 jobs" actually looks like in practice.</p>
+
+  <!-- Social content grid -->
+  <div class="img-grid-6 reveal" style="margin-top: 2.5rem;">
+    <img src="images%20needed/oc-social%20%281%29.jpg" alt="Origins Curriculum social media content" class="case-img">
+    <img src="images%20needed/oc-social%20%282%29.jpg" alt="Origins Curriculum social post" class="case-img">
+    <img src="images%20needed/oc-social%20%283%29.jpg" alt="Origins Curriculum social graphic" class="case-img">
+    <img src="images%20needed/oc-social%20%284%29.jpg" alt="Origins Curriculum content piece" class="case-img">
+    <img src="images%20needed/oc-social%20%285%29.jpg" alt="Origins Curriculum promotional graphic" class="case-img">
+    <img src="images%20needed/oc-social%20%286%29.jpg" alt="Origins Curriculum ad creative" class="case-img">
+  </div>
+
+  <!-- Video content -->
+  <div style="margin-top: 3rem;">
+    <div class="section-label reveal">Video Production</div>
+    <h3 class="reveal d1" style="font-family: var(--font-heading); font-size: clamp(1.3rem, 2.2vw, 1.75rem); font-weight: 900; color: var(--text); margin-bottom: 0.75rem; margin-top: 0.4rem;">Edited video content for curriculum promotion and client training.</h3>
+    <p class="cs-body reveal d2">Beyond still content, I produced and edited video: promotional clips for social, curriculum previews, and training walkthroughs for the team and clients.</p>
+    <div class="img-grid-2" style="margin-top: 1.5rem;">
+      <div class="video-card reveal d1">
+        <video src="images%20needed/oc-video-social%20%281%29.mp4" autoplay muted loop playsinline class="case-video" style="aspect-ratio: 9/16; object-fit: contain; background:#000;"></video>
+      </div>
+      <div class="video-card reveal d2">
+        <video src="images%20needed/oc-video-social%20%282%29.mp4" autoplay muted loop playsinline class="case-video" style="aspect-ratio: 9/16; object-fit: contain; background:#000;"></video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── OUTCOMES ─── -->
+<div class="cs-section--alt">
+  <div class="cs-section-inner">
+    <div class="section-label reveal">The Result</div>
+    <h2 class="cs-section-headline reveal d1">An organization that could finally<br><em style="font-style: italic; color: var(--gold);">run at the speed it was growing.</em></h2>
+
+    <div class="outcomes">
+      <div class="outcome-card reveal d1">
+        <div class="outcome-number">1→1</div>
+        <div class="outcome-label">Full platform migration. One system rebuilt inside another, zero downtime to existing customers.</div>
+      </div>
+      <div class="outcome-card reveal d2">
+        <div class="outcome-number">⚡</div>
+        <div class="outcome-label">Real-time lead alerts replaced manual follow-up. The sales team always knew who to call and when.</div>
+      </div>
+      <div class="outcome-card reveal d3">
+        <div class="outcome-number">∞</div>
+        <div class="outcome-label">Automation system runs indefinitely. Campaigns, scoring, and routing work without human intervention.</div>
+      </div>
+    </div>
+
+    <div class="callout reveal" style="margin-top: 2.5rem;">
+      <div class="callout-label">In Their Own Words</div>
+      <p>I'm listed on the Origins Curriculum team page as their <strong>Customer Experience & Systems Designer</strong>. That's the title they gave the role, after watching what it took to actually do it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── NEXT PROJECT ─── -->
+<div class="next-project">
+  <div class="next-label">Continue Reading</div>
+  <h2 class="next-title">More Case Studies</h2>
+  <div class="next-links">
+    <a href="wellflower.html" class="btn btn-gold">The WellFlower: Design and Python Automation →</a>
+    <a href="redbull.html" class="btn btn-outline">Red Bull: Event Design and Systems →</a>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">Ronald Conn III</div>
+  <div class="footer-copy">© 2026 &nbsp;·&nbsp; Fractional Chief of Staff &nbsp;·&nbsp; Austin, Texas</div>
+  <div class="footer-copy" style="display:flex;gap:1.25rem;align-items:center;">
+    <a href="https://www.linkedin.com/in/rc3studios/" target="_blank" rel="noopener" style="color:rgba(241,240,235,0.45);text-decoration:none;font-size:0.8rem;transition:color 0.2s;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(241,240,235,0.45)'">LinkedIn</a>
+    <span style="opacity:0.3;color:#f1f0eb;">·</span>
+    <a href="index.html#contact" style="color:rgba(241,240,235,0.45);text-decoration:none;font-size:0.8rem;transition:color 0.2s;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(241,240,235,0.45)'">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Fire hero elements immediately
+  document.querySelectorAll('.cs-hero .reveal').forEach(el => {
+    setTimeout(() => el.classList.add('is-visible'), 150);
+    observer.unobserve(el);
+  });
+</script>
+
+</body>
+</html>
